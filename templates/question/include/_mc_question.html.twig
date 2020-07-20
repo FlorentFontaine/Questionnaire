@@ -1,0 +1,42 @@
+{% set qtyCorrectAnswer = 0 %}
+<div  class="questionAbstract mb-3">{{question.text | raw}}</div>
+{% for mcAnswer in question.answers %}
+    {% if 1 == mcAnswer.valid %}
+        {% set qtyCorrectAnswer = qtyCorrectAnswer +1 %}
+    {% endif %}
+{% endfor %}
+{% set inputType = "checkbox" %}
+{% if  1 == qtyCorrectAnswer %}
+    {% set inputType = "radio" %}
+{% endif %}
+{% set questionByCategory = app.session.get('questionByCategory') %}
+{% set answersArray = [] %}
+{% for candidateQuestion in questionByCategory[categoryId] %}
+    {% for mcAnswer in question.answers %}
+        {% if candidateQuestion.type == 'QCM' %}
+            {% if candidateQuestion.id == question.id %}
+                {% if candidateQuestion.answer is not iterable %}
+                    <div class="mcAnswers "><input type="{{ inputType }}" id="{{mcAnswer.id}}" name="{{question.id}}[]" value="{{mcAnswer.id}}">
+                        <label for="{{mcAnswer.id}}"> {{mcAnswer.text}}</label></div>
+                {% endif %}
+                {% if candidateQuestion.answer is iterable %}
+                    {% for candidateAnswer in candidateQuestion.answer %}
+                        {% if candidateAnswer == mcAnswer.id and mcAnswer.id not in answersArray %}
+                            <div class="mcAnswers " ><input type="{{ inputType }}" id="{{mcAnswer.id}}" name="{{question.id}}[]" value="{{mcAnswer.id}}" checked>
+                                <input type="hidden" name="{{question.id}}[]">
+                                <label for="{{mcAnswer.id}}"> {{mcAnswer.text}}</label></div>
+                            {% set answersArray = answersArray|merge([mcAnswer.id]) %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for candidateAnswer in candidateQuestion.answer %}
+                        {% if candidateAnswer != mcAnswer.id and mcAnswer.id not in answersArray %}
+                            <div class="mcAnswers "><input type="{{ inputType }}" id="{{mcAnswer.id}}" name="{{question.id}}[]" value="{{mcAnswer.id}}">
+                                <label for="{{mcAnswer.id}}"> {{mcAnswer.text}}</label></div>
+                            {% set answersArray = answersArray|merge([mcAnswer.id]) %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,21 @@
+image: roadiz/php74-runner
+
+
+test:
+  script:
+    - "composer install --no-interaction --no-scripts"
+    - "phpdbg -qrr bin/phpunit --coverage-html phpunit-coverage --coverage-text --colors=never"
+  artifacts:
+    paths:
+      - phpunit-coverage
+  cache:
+    key:
+      files:
+        - composer.lock
+    paths:
+      - vendor/
+
+quality:
+  script:
+    - "curl -L http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer"
+    - "php php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no"

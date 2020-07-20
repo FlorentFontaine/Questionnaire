@@ -1,0 +1,58 @@
+admin:
+  entity:
+    evaluation: Evaluation
+    categories: Catégories
+    position: Position
+    category: Catégorie
+    textquestions: Questions à texte
+    mcquestions: Questions à choix multiples
+    mcanswers: Réponse multiples
+    property:
+      title: Titre
+      text: Texte
+      answer: Réponse
+      position: Position
+    user:
+      user: Utilisateur
+      admin: Administrateur
+      is_logged: est connecté
+      logout: déconnexion
+      connect: Connexion
+      security:
+        id: Saisissez vos identifiants
+        login: Nom d'utilisateur
+        password: Mot de passe
+        profile: Profil
+home_page:
+  start: Démarrer le questionnaire
+  title: Evaluation en programmation
+formtype:
+  answer:
+    is_true: Cochez si la bonne réponse
+  firstname: Prénom
+  lastname: Nom
+front:
+  home: Accueil
+  category: Catégorie
+  candidate:
+    start: Commencer
+  question: Question
+  save: Enregistrer
+  paginate:
+    precedent: Précédent
+    suivant: Suivant
+test:
+  end: Valider le test
+  annul: Annuler le test
+  test_close: Fin du questionnaire
+modal:
+  valid: Valider
+  close: Fermer
+  end: Test terminé
+  remove: Fermer session
+  nbQuestions: Questions répondu
+  are_sur:
+    confirmAnnul: Êtes-vous sûr de vouloir annuler le test ?
+    annul: Le test sera réinitialisé.
+    confirmValid: Êtes-vous sûr d'avoir terminé le test ?
+    valid: Une fois validé, un PDF va se télécharger.

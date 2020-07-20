@@ -1,0 +1,9 @@
+<div  class="questionAbstract mb-3">{{question.text | raw}}</div>
+{% set questionByCategory = app.session.get('questionByCategory') %}
+{% for candidateQuestion in questionByCategory[categoryId] %}
+    {% if candidateQuestion.type == 'QT' %}
+        {% if candidateQuestion.id == question.id %}
+                <textarea  name="{{ question.id }}" id="" cols="50" rows="5" placeholder="{{ candidateQuestion.answer}}"></textarea>
+        {% endif %}
+    {% endif %}
+{% endfor %}

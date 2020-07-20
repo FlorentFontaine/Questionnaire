@@ -1,0 +1,14 @@
+parameters:
+  level: 8
+  paths:
+    - src
+  checkMissingIterableValueType: false
+  checkMissingVarTagTypehint: false
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    - '#Property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+ has no typehint specified.#'
+  symfony:
+    container_xml_path: %rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml
+
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon

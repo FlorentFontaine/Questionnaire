@@ -1,0 +1,14 @@
+easy_admin:
+  entities:
+    Category:
+      class: App\Entity\Category
+      label: 'admin.entity.categories'
+      list:
+        actions: ['edit', 'search', '-delete']
+        fields:
+          - {property: 'label', label: 'admin.entity.property.title'}
+          - {property: 'position', label: 'admin.entity.property.position'}
+      form:
+        fields:
+          - {property: 'label', label: 'admin.entity.category'}
+          - {property: 'position', label: 'admin.entity.property.position'}

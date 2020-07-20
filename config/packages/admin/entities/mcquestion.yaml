@@ -1,0 +1,17 @@
+easy_admin:
+  entities:
+    MCQuestion:
+      class: App\Entity\MCQuestion
+      label: 'admin.entity.mcquestions'
+      controller: App\Controller\Admin\AdminController
+      list:
+        fields:
+          - {property: 'category', label: 'admin.entity.category' }
+          - {property: 'label', label: 'admin.entity.property.title'}
+      form:
+        fields:
+          - {property: 'position', label: 'admin.entity.property.position'}
+          - {property: 'label', label: 'admin.entity.property.title'}
+          - {property: 'text', type: 'fos_ckeditor', label: 'admin.entity.property.text'}
+          - {property: 'answers', label: 'admin.entity.property.answer' , type: 'collection', type_options: {entry_type: App\Form\MCAnswerType, by_reference: false }}
+          - {property: 'category', label: 'admin.entity.category' , type: 'entity', type_options: { class: App\Entity\Category }}

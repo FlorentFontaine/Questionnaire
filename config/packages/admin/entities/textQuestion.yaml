@@ -1,0 +1,18 @@
+easy_admin:
+  entities:
+    TextQuestion:
+      class: App\Entity\TextQuestion
+      label: 'admin.entity.textquestions'
+      controller: App\Controller\Admin\AdminController
+      list:
+        fields:
+          - {property: 'category', label: 'admin.entity.category' }
+          - {property: 'label', label: 'admin.entity.property.title'}
+          - {property: 'answer', label: 'admin.entity.property.answer'  , template: 'admin/textQuestion_answer.html.twig'}
+      form:
+        fields:
+          - {property: 'position', label: 'admin.entity.property.position'}
+          - {property: 'label', label: 'admin.entity.property.title'}
+          - {property: 'text', type: 'fos_ckeditor', label: 'admin.entity.property.text'}
+          - {property: 'answer', label: 'admin.entity.property.answer'}
+          - {property: 'category', label: 'admin.entity.category' , type: 'entity', type_options: { class: App\Entity\Category }}

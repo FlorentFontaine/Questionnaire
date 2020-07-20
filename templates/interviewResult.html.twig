@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <base href="http://eval_apache/">
+</head>
+{% block body %}
+<img class="imgBd" alt="" src="/images/logo-bd.gif" />
+    <i><h1 class="display-4">{{ 'home_page.title'|trans }}</h1></i>
+    <div class="infos">
+        <p class="candidate">{{ infosCandidate.firstName }}</p>
+        <p class="candidate">{{ infosCandidate.lastName }}</p>
+        <p class="candidate" >{{ infosCandidate.createdAt }}</p>
+    </div>
+    <p style="page-break-after: always">&nbsp;</p>
+    {% set answersArray = []%}
+    {% set candidate = app.session.get('questionByCategory') %}
+    {# Affichage de la catégorie #}
+    {% for categoryIndex, categories in interview %}
+        <div style="page-break-after: always"></div>
+        {% for key, category in categories %}
+            {% set myVal = 0 %}
+        <div class="interval"></div>
+        <table>
+            <tr>
+                <td class="category" colspan="2">Category : {{ key }}</td>
+            </tr>
+            {# Affichage de la question #}
+            {% for questionsInCategory  in categories  %}
+                {% for questions in questionsInCategory  %}
+                    {% set myVal = myVal + 1 %}
+                    <tr class="question" style="padding-top: 20px;" ><td colspan="2" style="padding-left: 20px; "><strong><p>Question {{ myVal }} : {{ questions[0] | raw}} </p></strong></td></tr>
+                    {# Affichage de la réponse(s) faite par le candidat #}
+                    {% if questions[1] is iterable %}
+                        {% for answersQuestion in questions[1] %}
+                            {% for candidateAnswers in candidate[categoryIndex] %}
+                                {% if candidateAnswers.answer is defined %}
+                                    {% for candidateAnswer in candidateAnswers.answer %}
+                                        {% if answersQuestion.id == candidateAnswer and answersQuestion.id not in answersArray  %}
+                                            {% if answersQuestion.valid == true %}
+                                                <tr ><td colspan="2" style="padding-bottom: 20px; padding-top: 20px;"><strong><ul><li><span style="color:green;">{{ answersQuestion.text | raw}}</span></li></ul></strong></td></tr>
+                                            {% else %}
+                                                <tr><td colspan="2" style="padding-bottom: 20px;padding-top: 20px;"><ul><li><strike><span style="color:#ff0000;">{{ answersQuestion.text | raw}}</span></strike></li></ul></td></tr>
+                                            {% endif %}
+                                            {% set answersArray = answersArray|merge([answersQuestion.id]) %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        {# Affichage des réponses restantes #}
+                        {% for answersQuestion in questions[1] %}
+                            {% for candidateAnswers in candidate[categoryIndex] %}
+                                {% if candidateAnswers.answer is defined and answersQuestion.id not in answersArray%}
+                                    {% if answersQuestion.valid == true  %}
+                                        <tr><td colspan="2" style="padding-bottom: 20px;padding-top: 20px;"><ul><li><i><strong>{{ answersQuestion.text | raw}}</strong></i></li></ul></td></tr>
+                                    {% else %}
+                                        <tr><td colspan="2" style="padding-bottom: 20px;padding-top: 20px;"><ul><li>{{ answersQuestion.text | raw}}</li></ul></td></tr>
+                                    {% endif %}
+                                    {% set answersArray = answersArray|merge([answersQuestion.id]) %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {# Affichage des réponses à texte répondu par le candidat #}
+                            {% for candidateAnswers in candidate[categoryIndex] %}
+                                {% if questions[2] == candidateAnswers.id and 'QT' == candidateAnswers.type %}
+                                    <tr>
+                                        <td class="textCandidate" >{{ candidateAnswers.answer | raw}}</td>
+                                        <td style=" width: 50%; padding: 40px;"><strong><i>{{ questions[1]| raw}}</i></strong></td>
+                                    </tr>
+                                {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+        </table>
+    {% endfor %}
+<script>
+</script>
+    <STYLE>
+        .infos{
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 500px;
+        }
+        h1{
+            font-size: 48px;
+        }
+        table {
+             border-collapse: collapse;
+            width: 100%;
+            height: 40px;
+         }
+        .category{
+            font-size: 24px;
+            text-align: center;
+            font-weight: bold;
+            padding-bottom: 40px;
+        }
+        .question{
+            background-color: grey;
+        }
+        .textCandidate{
+            width: 50%;
+            padding: 40px;
+            color: #181d3f ;
+            height: 150px;
+        }
+        .imgBd{
+            height:150px;
+            width:100%;
+            margin: 20px;
+        }
+    </STYLE>
+</html>
+{% endblock %}

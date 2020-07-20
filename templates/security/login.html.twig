@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'admin.entity.user.login'|trans }}{% endblock %}
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+             {{ app.user.username }} {{ 'admin.entity.user.is_logged'|trans }}, <a href="{{ path('app_logout') }}">{{ 'admin.entity.user.logout'|trans }}</a>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="h3 mb-3 font-weight-normal">{{ 'admin.entity.user.security.id'|trans }}</h1>
+                <div class="row mt-4">
+                    <label class="col-2 offset-1" for="inputLogin">{{ 'admin.entity.user.security.login'|trans }}</label>
+                    <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control col-2" required autofocus>
+                    <label class="col-2 mr-0" for="inputPassword">{{ 'admin.entity.user.security.password'|trans }}</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control col-2" required>
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+        <button class="btn btn-lg btn-primary ml-5" type="submit">
+            {{ 'admin.entity.user.connect'|trans }}
+        </button>                </div>
+
+        </div>
+    </div>
+</form>
+{% endblock %}

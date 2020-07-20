@@ -1,0 +1,26 @@
+{% block body %}
+    <div class="col-4">
+        <div class="list-group" id="category" role="tablist">
+        {% set categoriesEmpty = [] %}
+        {% set questionByCategories = app.session.get('questionByCategory') %}
+        {% for keys, categoryQuestions in questionByCategories %}
+            {% if categoryQuestions is empty %}
+                {% set categoriesEmpty = categoriesEmpty|merge([keys]) %}
+            {% endif %}
+        {% endfor %}
+        {% for category in categories %}
+            {% if category.id not in categoriesEmpty %}
+                {% if categoryId is defined and categoryId == category.id and categoryId %}
+                    <a class="list-group-item list-group-item-action active" id="selectCategory" href="{{path('category.questions', {categoryId: category.id}) }}" >{{category.label}}</a>
+                {% endif %}
+                {% if categoryId is defined and categoryId != category.id %}
+                    <a class="list-group-item list-group-item-action"   href="{{path('category.questions', {categoryId: category.id}) }}">{{category.label}}</a>
+                {% endif %}
+                {% if  categoryId is not defined %}
+                    <a class="list-group-item list-group-item-action"  href="{{path('category.questions', {categoryId: category.id}) }}" >{{category.label}}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

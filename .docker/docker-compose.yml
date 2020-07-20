@@ -1,0 +1,59 @@
+version: '2'
+
+services:
+  php:
+    build: php
+    container_name: $PHP_CONTAINER_NAME
+    volumes:
+      - ..:$PHP_ROOT_DIR
+    ports:
+      - 8008:8008
+
+  apache:
+    image: httpd:2.4
+    container_name: $APACHE_CONTAINER_NAME
+    environment:
+      VHOST_BASE_DOC_ROOT: $PHP_ROOT_DIR
+      VHOST_SERVER_NAME: $APACHE_SERVER_NAME
+      VHOST_PHP_HOST: $PHP_CONTAINER_NAME
+    ports:
+      - 80:80
+    volumes:
+      - ./config/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./config/vhosts:/etc/apache2/sites-enabled
+      - ..:$PHP_ROOT_DIR
+    depends_on:
+      - php
+
+  db:
+    image: mysql
+    container_name: $DB_CONTAINER_NAME
+    environment:
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    command:
+      --default-authentication-plugin=mysql_native_password
+
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: $DB_ADMIN_CONTAINER_NAME
+    environment:
+      PMA_HOST: $DB_CONTAINER_NAME
+      PMA_PORT: $DB_PORT
+      PMA_USER: root
+      PMA_PASSWORD: $DB_ROOT_PASSWORD
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+
+
+
+  dockerize:
+    image: jwilder/dockerize

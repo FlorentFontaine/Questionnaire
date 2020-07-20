@@ -1,0 +1,10 @@
+easy_admin:
+  design:
+    menu:
+      - { entity: 'User' , label: 'admin.entity.user.user'}
+      - label: 'admin.entity.evaluation'
+        icon: 'newspaper-o'
+        children:
+          - {entity: 'Category', icon: 'inbox', label: 'admin.entity.categories' }
+          - {entity: 'TextQuestion', icon: 'newspaper-o', label: 'admin.entity.textquestions'}
+          - {entity: 'MCQuestion', icon: 'newspaper-o', label: 'admin.entity.mcquestions'}
